@@ -63,10 +63,10 @@ with pdbs as (
 	&&v_12copts select inst_id, con_id, name
 	&&v_12copts from gv$pdbs
 	&&v_12copts union all
-	select rownum inst_id, 0 con_id, 'CDB' name
+	select inst_id, 0 con_id, 'CDB' name
 	from gv$instance
 	union all
-	select rownum inst_id, 1 con_id, 'ROOT' name
+	select inst_id, 1 con_id, 'ROOT' name
 	from gv$instance
 )
 select distinct
@@ -90,6 +90,7 @@ from gv$session s
 -- uncomment to see only your own session
 left outer join gv$process p on s.inst_id = p.inst_id
 	and p.addr = s.paddr
+	and p.con_id = s.con_id
 &&v_12copts join pdbs  pdb
 	&&v_12copts on pdb.inst_id = s.inst_id
 	&&v_12copts and pdb.con_id = s.con_id
